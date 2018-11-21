@@ -2,6 +2,11 @@
 
 int v_func(const Board& bd, int next_player) {
 	int v = 0;
+	v = bd.finish();
+	if (v) {
+		return v > 0 ? INT_MAX : INT_MIN;
+	}
+	v = 0;
 	auto& board = bd.get_board();
 	for (int i = 0; i < __board.size(); i++) {
 		for (int j = 0; j < __board[0].size(); j++) {

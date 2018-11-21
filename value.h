@@ -2,9 +2,10 @@
 #define __VALUE_H
 
 #include "board.h"
+#include <limits>
 
 // positive value for black superiority, vice cetera
-int v_func(const board& bd);
+int v_func(const Board& bd);
 
 
 #endif
