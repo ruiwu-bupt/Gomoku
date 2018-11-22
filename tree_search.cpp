@@ -2,27 +2,50 @@
 #include "value.h"
 #include <algorithm>
 
-
-mv Ab_search::search(Board& board) const {
-
+// maxmizingPlayer indicate bot AI is black(true) or white(false)
+mv Ab_search::search(Board& board, bool maxmizingPlayer) const {
+	return __search(board, 4, INT_MIN, INT_MAX, maxmizingPlayer);
 }
 
-pair<int, mv> Ab_search::__search(Board& board, mv move, int depth, 
+pair<int, mv> Ab_search::__search(Board& board, int depth, 
 	int alpha, int beta, bool maxmizingPlayer) const {
-	board.get_board()[move.first][move.second] = maxmizingPlayer;
+	mv this_move;
 	int v = v_func(Board);
 	if (!depth || v == INT_MAX || v == INT_MIN)
-		return v;
+		return pair<int, mv> (v, pair<int, int> ());
 	vector<mv> children = generate_children(Board);
 	if (maxmizingPlayer) {
 		v = INT_MIN;
-		
+		for (int i = 0; i < children.size(); i++) {
+			board[children[i].first][children[i].second] = 1;
+			auto tmp = __search(board, depth-1, alpha, beta, false);
+			board[children[i].first][children[i].second] = 0;
+			if (tmp.first > v) {
+				v = tmp.first;
+				this_move = children[i];
+			}
+			alpha = max(alpha, v);
+			if (beta <= alpha)
+				break;
+		}
 	}
 	else {
 		v = INT_MAX;
+		for (int i = 0; i < children.size(); i++) {
+			board[children[i].first][children[i].second] = 1;
+			auto tmp = __search(board, depth-1, alpha, beta, true);
+			board[children[i].first][children[i].second] = 0;
+			if (tmp.first < v) {
+				v = tmp.first;
+				this_move = children[i];
+			}
+			beta = min(beta, v);
+			if (beta <= alpha)
+				break;
+		}
 	}
 	board.get_board()[move.first][move.second] = 0;
-	return pair<int, mv> ();
+	return pair<int, mv> (v, this_move);
 }
 
 // max distance 2 for this child piece and any other piece on board

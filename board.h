@@ -2,11 +2,14 @@
 #define __BOARD_H
 
 #include <vector>
-#include <curses.h>
+#include <ncurses.h>
 #include <utility>
-
+using namespace std;
 typedef pair<int, int> mv;
 
+const char* black = "＠";
+const char* white = "＃";
+const char* blank = "十";
 // -1 for white, 0 for null, 1 for black
 class Board{
 public:

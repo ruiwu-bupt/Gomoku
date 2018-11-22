@@ -8,40 +8,51 @@ int v_func(const Board& bd, int next_player) {
 	}
 	v = 0;
 	auto& board = bd.get_board();
-	for (int i = 0; i < __board.size(); i++) {
-		for (int j = 0; j < __board[0].size(); j++) {
-			if (!__board[i][j])
+	int m = board.size();
+	int n = board[0].size();
+	for (int i = 0; i < m; i++) {
+		for (int j = 0; j < n; j++) {
+			if (!board[i][j])
 				continue;
 			int k = 1, cnt = 0;
-			if (j == 0 || __board[i][j] != board[i][j-1]) {
-				while (j+k < board[0].size() && __board[i][j+k] == __board[i][j])
+			if (j == 0 || board[i][j] != board[i][j-1]) {
+				while (j+k < n && board[i][j+k] == board[i][j])
 					k++;
-				if (j != 0 && !__board[i][j-1])
+				if (j != 0 && !board[i][j-1])
 					cnt++;
-				if (j+k != board[0].size() && !__board[i][j+k])
+				if (j+k != n && !board[i][j+k])
 					cnt++;
-				v += v_assist(k, cnt, __board[i][j], next_player);
+				v += v_assist(k, cnt, board[i][j], next_player);
 				k = 1, cnt = 0;
 			}
-			if (i == 0 || __board[i][j] != board[i-1][j]) {
-				while (i+k < board.size() && __board[i+k][j] == __board[i][j])
+			if (i == 0 || board[i][j] != board[i-1][j]) {
+				while (i+k < m && board[i+k][j] == board[i][j])
 					k++;
-				if (i != 0 && !__board[i-1][j])
+				if (i != 0 && !board[i-1][j])
 					cnt++;
-				if (i+k != board.size() && !__board[i+k][j])
+				if (i+k != m && !board[i+k][j])
 					cnt++;
-				v += v_assist(k, cnt, __board[i][j], next_player);
+				v += v_assist(k, cnt, board[i][j], next_player);
 				k = 1, cnt = 0;
 				
 			}
-			if ((i == 0 && j == 0) || __board[i][j] != board[i-1][j-1]) {
-				while ((i+k < board.size() && j+k < board[0].size()) && __board[i+k][j+k] == __board[i][j])
+			if ((i == 0 || j == 0) || board[i][j] != board[i-1][j-1]) {
+				while ((i+k < m && j+k < n) && board[i+k][j+k] == board[i][j])
 					k++; 
-				if ((j != 0 && i!= 0) && !__board[i-1][j-1])
+				if ((j != 0 && i!= 0) && !board[i-1][j-1])
 					cnt++;
-				if ((i+k != board.size() && j+k != board[0].size()) && !__board[i+k][j+k])
+				if ((i+k != m && j+k != n) && !board[i+k][j+k])
 					cnt++;
-				v += v_assist(k, cnt, __board[i][j], next_player);
+				v += v_assist(k, cnt, board[i][j], next_player);
+			}
+			if ((i == 0 || j == n-1) || board[i][j] != board[i-1][j+1]) {
+				while ((i+k < m && j-k >= 0) && board[i+k][j-k] == board[i][j])
+					k++; 
+				if ((j != n-1 && i!= 0) && !board[i-1][j-1])
+					cnt++;
+				if ((i+k != m && j-k != -1) && !board[i+k][j-k])
+					cnt++;
+				v += v_assist(k, cnt, board[i][j], next_player);
 			}
 		}
 	}
