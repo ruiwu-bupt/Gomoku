@@ -1,6 +1,6 @@
 #include "value.h"
 
-int v_func(const Board& bd, int next_player) {
+int v_func(Board& bd, int next_player) {
 	int v = 0;
 	v = bd.finish();
 	if (v) {
@@ -59,7 +59,7 @@ int v_func(const Board& bd, int next_player) {
 	return v;
 }
 
-inline int v_assist(int lian, int huo, int current_pos_player, int next_player) {
+int v_assist(int lian, int huo, int current_pos_player, int next_player) {
 	if (huo == 0)
 		return 0;
 	else if (huo == 1) {
@@ -70,8 +70,10 @@ inline int v_assist(int lian, int huo, int current_pos_player, int next_player) 
 		}
 	}
 	else {
-		case 2 : return 1<<(3*(current_pos_player==next_player)+1)*current_pos_player;
-		case 3 : return 1<<(6*(current_pos_player==next_player)+1)*current_pos_player;
-		case 4 : return 1<<(12*(current_pos_player==next_player)+1)*current_pos_player;
+		switch(lian) {
+			case 2 : return 1<<(3*(current_pos_player==next_player)+1)*current_pos_player;
+			case 3 : return 1<<(6*(current_pos_player==next_player)+1)*current_pos_player;
+			case 4 : return 1<<(12*(current_pos_player==next_player)+1)*current_pos_player;
+		}
 	}
 }

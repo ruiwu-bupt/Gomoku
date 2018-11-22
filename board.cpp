@@ -1,6 +1,9 @@
 #include "board.h"
 #include <assert.h>
 
+const char* black = "＠";
+const char* white = "＃";
+const char* blank = "十";
 
 Board::Board(int N) {
 	__N = N;
@@ -19,33 +22,26 @@ Board::Board(int N, const vector<vector<int>>& opening) {
 	}
 }
 
-bool Board::move_valid(const mv& move) {
+bool Board::move_valid(const mv& move) const {
 	int x = move.first;
 	int y = move.second;
 	return !(x < 0 || x >= __N || y < 0 || y >= __N || __board[x][y]);
 }
 
-bool Board::black_move(const mv& move) {
+bool Board::move(const mv& move, bool is_black) {
 	int x = move.first;
 	int y = move.second;
 	if (!move_valid(mv(x,y)))
 		return false;
-	__board[x][y] = 1;
-	__black_moves.push_back(mv(x, y));
+	__board[x][y] = is_black;
+	if (is_black)
+		__black_moves.push_back(mv(x, y));
+	else
+		__white_moves.push_back(mv(x, y));
 	return true;
 }
 
-bool Board::white_move(const mv& move) {
-	int x = move.first;
-	int y = move.second;
-	if (!move_valid(mv(x,y)))
-		return false;
-	__board[x][y] = -1;
-	__white_moves.push_back(mv(x, y));
-	return true;
-}
-
-int Board::finish() {
+int Board::finish() const {
 	for (int i = 0; i < __board.size(); i++) {
 		for (int j = 0; j < __board[0].size(); j++) {
 			if (!__board[i][j])
@@ -83,7 +79,7 @@ int Board::finish() {
 	return 0;
 }
 
-void Board::draw() {
+void Board::draw() const {
 	for (int i = 0; i < __board.size(); i++) {
 		for (int j = 0; j < __board[i].size(); j++) {
 			switch(__board[i][j]) {
