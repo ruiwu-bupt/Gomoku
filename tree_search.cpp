@@ -3,14 +3,15 @@
 #include <algorithm>
 
 // maxmizingPlayer indicate bot AI is black(true) or white(false)
-mv Ab_search::search(Board& board, bool maxmizingPlayer) const {
-	return __search(board, 6, INT_MIN, INT_MAX, maxmizingPlayer).second;
+mv Ab_search::search(Board& board, bool maxmizingPlayer) {
+	return __search(board, 5, INT_MIN, INT_MAX, maxmizingPlayer).second;
 }
 
 pair<int, mv> Ab_search::__search(Board& board, int depth, 
-	int alpha, int beta, bool maxmizingPlayer) const {
+	int alpha, int beta, bool maxmizingPlayer) {
+	node_num++;
 	mv this_move;
-	int v = v_func(board, maxmizingPlayer ? -1 : 1);
+	int v = v_func(board, maxmizingPlayer ? 1 : -1);
 	if (!depth || v == INT_MAX || v == INT_MIN)
 		return pair<int, mv> (v, pair<int, int> ());
 	vector<mv> children = generate_children(board);

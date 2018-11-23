@@ -61,6 +61,8 @@ void game(const char* opening_file, bool is_black) {
 		}
 		turn = 1-turn;
 		clear();
+		mvaddstr(N+4, 0, to_string(ai.node_num).c_str());
+		ai.node_num = 0;
 		bd.draw();
 		refresh();
 	}
