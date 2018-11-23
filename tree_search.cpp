@@ -4,13 +4,13 @@
 
 // maxmizingPlayer indicate bot AI is black(true) or white(false)
 mv Ab_search::search(Board& board, bool maxmizingPlayer) const {
-	return __search(board, 4, INT_MIN, INT_MAX, maxmizingPlayer).second;
+	return __search(board, 6, INT_MIN, INT_MAX, maxmizingPlayer).second;
 }
 
 pair<int, mv> Ab_search::__search(Board& board, int depth, 
 	int alpha, int beta, bool maxmizingPlayer) const {
 	mv this_move;
-	int v = v_func(board, !maxmizingPlayer);
+	int v = v_func(board, maxmizingPlayer ? -1 : 1);
 	if (!depth || v == INT_MAX || v == INT_MIN)
 		return pair<int, mv> (v, pair<int, int> ());
 	vector<mv> children = generate_children(board);
@@ -33,7 +33,7 @@ pair<int, mv> Ab_search::__search(Board& board, int depth,
 	else {
 		v = INT_MAX;
 		for (int i = 0; i < children.size(); i++) {
-			bd[children[i].first][children[i].second] = 1;
+			bd[children[i].first][children[i].second] = -1;
 			auto tmp = __search(board, depth-1, alpha, beta, true);
 			bd[children[i].first][children[i].second] = 0;
 			if (tmp.first < v) {
@@ -54,6 +54,7 @@ vector<mv> Ab_search::generate_children(Board& board) const {
 	vector<mv> rst;
 	auto& bd = board.get_board();
 	int N = bd.size();
+	int l = 1;
 	if (!board.get_black_moves().size())
 		rst.push_back(mv(N/2, N/2));
 	else {
@@ -62,9 +63,9 @@ vector<mv> Ab_search::generate_children(Board& board) const {
 				if (bd[i][j])
 					continue;
 				bool valid = false;
-				for (int ii = max(0, ii-2); ii < min(N, ii+2); ii++) {
-					for (int jj = max(0, jj-2); jj < min(N, jj+2); jj++) {
-						if (!(ii == i && jj == j)) {
+				for (int ii = max(0, i-l); ii < min(N, i+l); ii++) {
+					for (int jj = max(0, j-l); jj < min(N, j+l); jj++) {
+						if (bd[ii][jj]) {
 							valid = true;
 							break;
 						}

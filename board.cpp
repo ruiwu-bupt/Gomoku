@@ -1,5 +1,6 @@
 #include "board.h"
 #include <assert.h>
+#include <string>
 
 const char* black = "＠";
 const char* white = "＃";
@@ -31,9 +32,9 @@ bool Board::move_valid(const mv& move) const {
 bool Board::move(const mv& move, bool is_black) {
 	int x = move.first;
 	int y = move.second;
-	if (!move_valid(mv(x,y)))
+	if (!move_valid(move))
 		return false;
-	__board[x][y] = is_black;
+	__board[x][y] = is_black ? 1 : -1;
 	if (is_black)
 		__black_moves.push_back(mv(x, y));
 	else
@@ -61,14 +62,14 @@ int Board::finish() const {
 					return __board[i][j];
 			}
 			k = 1;
-			if ((i == 0 && j == 0) || __board[i][j] != __board[i-1][j-1]) {
+			if ((i == 0 || j == 0) || __board[i][j] != __board[i-1][j-1]) {
 				while ((i+k < __board.size() && j+k < __board[0].size()) && __board[i+k][j+k] == __board[i][j])
 					k++;
 				if (k >= 5)
 					return __board[i][j];
 			}
 			k = 1;
-			if ((i == 0 && j == __N-1) || __board[i][j] != __board[i-1][j+11]) {
+			if ((i == 0 || j == __N-1) || __board[i][j] != __board[i-1][j+1]) {
 				while ((i+k < __board.size() && j-k >= 0) && __board[i+k][j-k] == __board[i][j])
 					k++;
 				if (k >= 5)
@@ -81,16 +82,23 @@ int Board::finish() const {
 
 void Board::draw() const {
 	for (int i = 0; i < __board.size(); i++) {
+		mvaddstr(i+1, 0, to_string(i).c_str());
+	}
+	for (int j = 0; j < __board[0].size(); j++) {
+		mvaddstr(0, (j+1)*2, to_string(j).c_str());
+	}
+	int x_padding = 1, y_padding = 2;
+	for (int i = 0; i < __board.size(); i++) {
 		for (int j = 0; j < __board[i].size(); j++) {
 			switch(__board[i][j]) {
 				case 0:
-					mvaddstr(i, j, blank);
+					mvaddstr(i+x_padding, j+y_padding, blank);
 					break;
 				case -1:
-					mvaddstr(i, j, white);
+					mvaddstr(i+x_padding, j+y_padding, white);
 					break;
 				case 1:
-					mvaddstr(i, j, black);
+					mvaddstr(i+x_padding, j+y_padding, black);
 					break;
 				default:
 					assert(false);

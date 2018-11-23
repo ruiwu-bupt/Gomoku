@@ -23,8 +23,6 @@ int main(int argc, char* argv[]) {
 }
 
 void game(const char* opening_file, bool is_black) {
-	int maxlines = LINES - 1;
-	int maxcols = COLS - 1;
 	int N;
 	vector<vector<int>> opening;
 	fstream f;
@@ -36,22 +34,25 @@ void game(const char* opening_file, bool is_black) {
 		opening.push_back(vector<int> {stoi(x), stoi(y), stoi(color)});
 	}
 	Board bd(N, opening);
-	bd.draw();
 	bool turn = bd.get_black_moves() == bd.get_white_moves();
 	Ab_search ai(0, 0);
-	bool rst;
-	while (rst = !bd.finish()) {
+	int rst;
+	while (!(rst = bd.finish())) {
 		string info = "你是白棋" + string(white);
 		if (is_black)
 			info = "你是黑棋" + string(black);
 		const char* str = "请输入落子位置: ";
-		mvaddstr(maxlines-2, 0, info.c_str());
+		mvaddstr(N+2, 0, info.c_str());
+		bd.draw();
+		refresh();
 		if (turn == is_black) {
-			mvaddstr(maxlines-1, 0, str);
+			mvaddstr(N+3, 0, str);
 			echo();
-			move(maxlines-1, 10);
+			refresh();
+			move(N+3, 16);
 			int x, y;
-			std::cin >> x >> y;
+			scanw("%d%d", &x, &y);
+			noecho();
 			bd.move(mv(x,y), is_black);
 		}
 		else {
@@ -59,10 +60,12 @@ void game(const char* opening_file, bool is_black) {
 			bd.move(move, !is_black);
 		}
 		turn = 1-turn;
+		clear();
+		bd.draw();
 		refresh();
 	}
-	if (rst == is_black)
-		mvaddstr(maxlines-1, 0, "你赢了");
+	if (rst == (is_black ? 1 : -1))
+		mvaddstr(N+3, 0, "你赢了");
 	else
-		mvaddstr(maxlines-1, 0, "你输了");
+		mvaddstr(N+3, 0, "你输了");
 }
