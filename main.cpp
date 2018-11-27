@@ -6,6 +6,7 @@
 #include <fstream>
 #include <string>
 #include <iostream>
+#include <ctime>
 
 void game(const char* opening, bool is_black);
 int main(int argc, char* argv[]) {
@@ -23,7 +24,14 @@ int main(int argc, char* argv[]) {
 }
 
 void game(const char* opening_file, bool is_black) {
+	int pos[][2] = {
+		{6, 8},
+		{4, 6},
+		{3, 5},
+		{2, 4}
+	};
 	int N;
+	int cnt = 0;
 	vector<vector<int>> opening;
 	fstream f;
 	f.open(opening_file, ios::in);
@@ -45,6 +53,7 @@ void game(const char* opening_file, bool is_black) {
 		mvaddstr(N+2, 0, info.c_str());
 		bd.draw();
 		refresh();
+		clock_t t1, t2;
 		if (turn == is_black) {
 			mvaddstr(N+3, 0, str);
 			echo();
@@ -53,16 +62,28 @@ void game(const char* opening_file, bool is_black) {
 			int x, y;
 			scanw("%d%d", &x, &y);
 			noecho();
+			// x = pos[cnt][0];
+			// y = pos[cnt][1];
 			bd.move(mv(x,y), is_black);
 		}
 		else {
+			t1 = clock();
 			mv move = ai.search(bd, !is_black);
+			t2 = clock();
 			bd.move(move, !is_black);
 		}
 		turn = 1-turn;
 		clear();
-		mvaddstr(N+4, 0, to_string(ai.node_num).c_str());
+		string profile = "";
+		float t = ((float)(t2-t1))/CLOCKS_PER_SEC;
+		float t_per = t/ai.node_num*1000000;
+		profile += "局面数: " + to_string(ai.node_num) + " ";
+		profile += "用时: " + to_string(t) + "s ";
+		profile += "每个局面用时: " + to_string(t_per) + "us ";
+		mvaddstr(N+4, 0, profile.c_str());
 		ai.node_num = 0;
+		t = 0;
+		t_per = 0;
 		bd.draw();
 		refresh();
 	}

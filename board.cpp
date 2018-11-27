@@ -43,34 +43,34 @@ bool Board::move(const mv& move, bool is_black) {
 }
 
 int Board::finish() const {
-	for (int i = 0; i < __board.size(); i++) {
-		for (int j = 0; j < __board[0].size(); j++) {
+	for (int i = 0; i < __N; i++) {
+		for (int j = 0; j < __N; j++) {
 			if (!__board[i][j])
 				continue;
 			int k = 1;
 			if (j == 0 || __board[i][j] != __board[i][j-1]) {
-				while (j+k < __board[0].size() && __board[i][j+k] == __board[i][j])
+				while ((j+k < __N) && __board[i][j+k] == __board[i][j])
 					k++;
 				if (k >= 5)
 					return __board[i][j];
 			}
 			k = 1;
 			if (i == 0 || __board[i][j] != __board[i-1][j]) {
-				while (i+k < __board.size() && __board[i+k][j] == __board[i][j])
+				while (i+k < __N && __board[i+k][j] == __board[i][j])
 					k++;
 				if (k >= 5)
 					return __board[i][j];
 			}
 			k = 1;
 			if ((i == 0 || j == 0) || __board[i][j] != __board[i-1][j-1]) {
-				while ((i+k < __board.size() && j+k < __board[0].size()) && __board[i+k][j+k] == __board[i][j])
+				while ((i+k < __N && j+k < __N) && __board[i+k][j+k] == __board[i][j])
 					k++;
 				if (k >= 5)
 					return __board[i][j];
 			}
 			k = 1;
 			if ((i == 0 || j == __N-1) || __board[i][j] != __board[i-1][j+1]) {
-				while ((i+k < __board.size() && j-k >= 0) && __board[i+k][j-k] == __board[i][j])
+				while ((i+k < __N && j-k >= 0) && __board[i+k][j-k] == __board[i][j])
 					k++;
 				if (k >= 5)
 					return __board[i][j];
