@@ -4,7 +4,7 @@
 
 // maxmizingPlayer indicate bot AI is black(true) or white(false)
 mv Ab_search::search(Board& board, bool maxmizingPlayer) {
-	return __search(board, 5, INT_MIN, INT_MAX, maxmizingPlayer).second;
+	return __search(board, 1, INT_MIN, INT_MAX, maxmizingPlayer).second;
 }
 
 pair<int, mv> Ab_search::__search(Board& board, int depth, 

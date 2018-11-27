@@ -1,6 +1,6 @@
 CC=g++
 # add -Wall?
-CFLAGS=-c -O2 -std=c++11 
+CFLAGS=-c -O3 -std=c++11 
 # CFLAGS=-c -g -std=c++11
 objects = main.o board.o tree_search.o value.o
 
@@ -8,7 +8,7 @@ objects = main.o board.o tree_search.o value.o
 all: gomoku
 
 gomoku: $(objects)
-	$(CC) $(objects) -lncursesw -O2 -o gomoku.out
+	$(CC) $(objects) -lncursesw -O3 -o gomoku.out
 
 main.o: main.cpp
 	$(CC) $(CFLAGS) main.cpp
