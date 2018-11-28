@@ -68,7 +68,7 @@ int v_func(Board& bd, int next_player) {
 
 int v_assist(int lian, int huo, int current_pos_player, int next_player) {
 	int large = 10000;
-	if (huo == 0)
+	if (huo == 0 || lian == 1)
 		return 0;
 	return v_matrix[current_pos_player==next_player][(lian-2)*2+(huo-1)]*current_pos_player;
 }

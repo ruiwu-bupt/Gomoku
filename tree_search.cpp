@@ -4,7 +4,7 @@
 
 // maxmizingPlayer indicate bot AI is black(true) or white(false)
 mv Ab_search::search(Board& board, bool maxmizingPlayer) {
-	return __search(board, 1, INT_MIN, INT_MAX, maxmizingPlayer).second;
+	return __search(board, 5, INT_MIN, INT_MAX, maxmizingPlayer).second;
 }
 
 pair<int, mv> Ab_search::__search(Board& board, int depth, 
@@ -49,7 +49,7 @@ pair<int, mv> Ab_search::__search(Board& board, int depth,
 	return pair<int, mv> (v, this_move);
 }
 
-// max distance 2 for this child piece and any other piece on board
+// max distance l for this child piece and any other piece on board
 // or use v_func
 vector<mv> Ab_search::generate_children(Board& board) const {
 	vector<mv> rst;
@@ -64,8 +64,8 @@ vector<mv> Ab_search::generate_children(Board& board) const {
 				if (bd[i][j])
 					continue;
 				bool valid = false;
-				for (int ii = max(0, i-l); ii < min(N, i+l); ii++) {
-					for (int jj = max(0, j-l); jj < min(N, j+l); jj++) {
+				for (int ii = max(0, i-l); ii <= min(N-1, i+l); ii++) {
+					for (int jj = max(0, j-l); jj <= min(N-1, j+l); jj++) {
 						if (bd[ii][jj]) {
 							valid = true;
 							break;

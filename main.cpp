@@ -42,7 +42,7 @@ void game(const char* opening_file, bool is_black) {
 		opening.push_back(vector<int> {stoi(x), stoi(y), stoi(color)});
 	}
 	Board bd(N, opening);
-	bool turn = bd.get_black_moves() == bd.get_white_moves();
+	bool turn = bd.get_black_moves().size() == bd.get_white_moves().size();
 	Ab_search ai(0, 0);
 	int rst;
 	while (!(rst = bd.finish())) {
