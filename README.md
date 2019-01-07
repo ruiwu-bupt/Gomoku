@@ -1,2 +1,2 @@
 # Gomoku
-A CNN and MCTS based gomoku AI
+A deep reinforcement learning based gomoku AI
