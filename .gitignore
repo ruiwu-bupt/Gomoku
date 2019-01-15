@@ -138,4 +138,5 @@ venv.bak/
 *.app
 
 *.dSYM/
+.idea/
 
