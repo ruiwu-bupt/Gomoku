@@ -31,6 +31,7 @@ class resnet39:
         for i in range(19):
             conv1 = block.bottleneck(conv1)
         policy = block.policy_head(conv1, N)
+        policy = slim.softmax(policy)
         value = block.value_head(conv1)
         # pdb.set_trace()
         return inputs, tf.concat([policy, value], 1)
