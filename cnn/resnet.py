@@ -7,8 +7,9 @@ import pdb
 
 # resnet类,包含构造函数,训练,推导,保存模型,载入模型等方法
 class resnet39:
-    def __init__(self, sess):
-        self.sess = sess
+    def __init__(self):
+        self.sess = tf.Session()
+        sess.run(tf.global_variables_initializer())
         # create reset39 network
         self.inputs, self.outputs = self.create_resnet39()
         self.labels = tf.placeholder(tf.float32, [None, self.outputs.get_shape()[-1]])
@@ -25,12 +26,12 @@ class resnet39:
         self.train_op = tf.train.MomentumOptimizer(L, M).minimize(self.loss)
 
     def create_resnet39(self):
-        inputs = tf.placeholder(tf.float32, [None, N, N, 17])
+        inputs = tf.placeholder(tf.float32, [None, CHANNEL, N, N])
         conv0 = block.pre_conv(inputs)
-        conv1 = conv0
         for i in range(19):
-            conv1 = block.bottleneck(conv1)
-        policy = block.policy_head(conv1, N)
+            conv0 = block.bottleneck(conv0)
+        conv1 = conv0
+        policy = block.policy_head(conv0, N)
         policy = slim.softmax(policy)
         value = block.value_head(conv1)
         # pdb.set_trace()
@@ -41,3 +42,5 @@ class resnet39:
 
     def predict(self, inputs):
         return self.sess.run(self.outputs, feed_dict={self.inputs: inputs})
+    def __del__(self):
+        self.sess.close()

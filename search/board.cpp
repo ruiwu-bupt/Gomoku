@@ -2,13 +2,14 @@
 #include <assert.h>
 #include <string>
 
-const char* black = "＠";
-const char* white = "＃";
-const char* blank = "十";
+const char* black_char = "＠";
+const char* white_char = "＃";
+const char* blank_char = "十";
 
 Board::Board(int N) {
 	__N = N;
 	__board = vector<vector<int>> (N, vector<int> (N, 0));
+    winner = 0;
 }
 
 Board::Board(int N, const vector<vector<int>>& opening) {
@@ -39,6 +40,7 @@ bool Board::move(const mv& move, bool is_black) {
 		__black_moves.push_back(mv(x, y));
 	else
 		__white_moves.push_back(mv(x, y));
+    winner = finish();
 	return true;
 }
 

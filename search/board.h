@@ -6,12 +6,18 @@
 #include <utility>
 using namespace std;
 typedef pair<int, int> mv;
+typedef pair<int, int> pos;
 
-extern const char* black;
-extern const char* white;
-extern const char* blank;
+extern const char* black_char;
+extern const char* white_char;
+extern const char* blank_char;
 
-// -1 for white, 0 for null, 1 for black
+const int BLACK = 1;
+const int WHITE = -1;
+const int BLANK = 0;
+const int BOARD_SZ = 15;
+
+// -1 for white, 0 for blank, 1 for black
 class Board{
 public:
 	Board(int N);
@@ -28,6 +34,7 @@ private:
 	vector<vector<int>> __board;
 	vector<mv> __black_moves;
 	vector<mv> __white_moves;
+    int winner;
 };
 
 #endif
