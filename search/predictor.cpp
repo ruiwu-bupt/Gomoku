@@ -9,7 +9,7 @@ extern PyObject* resnet;
 Predictor::test(vector<Board*>& bds) {
     PyObject *pName, *pModule, *pDict, *pFunc, *pArgs, *pInstance;
     int n = bds.size();
-    npy_intp Dims[4] = {n, 5, BOARD_SZ, BOARD_SZ};
+    npy_intp Dims[4] = {n, HISTORY_STEP, BOARD_SZ, BOARD_SZ};
     sample* test_sample = new sample[n];
     for (int sample_i = 0; sample_i < n; sample_i++) {
         auto bd = bds[sample_i];

@@ -1,10 +1,12 @@
 #ifndef __PREDICTOR_H
 #define __PREDICTOR_H
-#include <Python.h>
+#include "Python.h"
 #include "board.h"
 extern PyObject* resnet;
 
-typedef int sample[5][BOARD_SZ][BOARD_SZ];
+const int HISTORY_STEP = 5;
+
+typedef int sample[HSITORY_STEP][BOARD_SZ][BOARD_SZ];
 typedef float label[BOARD_SZ*BOARD_SZ+1];
 
 class Predictor {

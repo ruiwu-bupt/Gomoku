@@ -13,7 +13,7 @@ Board::Board(int N) {
 }
 
 Board::Board(int N, const vector<vector<int>>& opening) {
-	new(this)Board(N);
+    new(this)Board(N);
 	for (int i = 0; i < opening.size(); i++) {
 		__board[opening[i][0]][opening[i][1]] = opening[i][2];
 		mv move(opening[i][0], opening[i][1]);

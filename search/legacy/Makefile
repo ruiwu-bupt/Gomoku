@@ -1,21 +1,18 @@
 CC=g++
 # add -Wall?
-CFLAGS=-I/usr/include/python3.6m -c -std=c++11
+CFLAGS=-c -O3 -std=c++11 
 # CFLAGS=-c -g -std=c++11
-objects = main.o py_init.o
+objects = main.o board.o tree_search.o value.o
 
 # ultimate target
 all: gomoku
 
-# 搞了好久才编译出来
 gomoku: $(objects)
-	$(CC) $(objects) -lpython3.6m -lpthread -ldl  -lutil -lm -O3 -o test.out
+	$(CC) $(objects) -lncursesw -O3 -o gomoku.out
 
 main.o: main.cpp
 	$(CC) $(CFLAGS) main.cpp
 
-py_init.o: py_init.cpp
-	$(CC) $(CFLAGS) py_init.cpp
 board.o: board.cpp
 	$(CC) $(CFLAGS) board.cpp
 
