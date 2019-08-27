@@ -7,4 +7,4 @@ L = 1e-2
 # momentem
 M = 0.9
 # channel
-CHANNLE = 5
+CHANNEL = 5
