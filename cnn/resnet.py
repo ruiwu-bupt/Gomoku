@@ -7,9 +7,8 @@ import pdb
 
 # resnet类,包含构造函数,训练,推导,保存模型,载入模型等方法
 class resnet39:
-    def __init__(self):
-        self.sess = tf.Session()
-        sess.run(tf.global_variables_initializer())
+    def __init__(self, session):
+        self.sess = session
         # create reset39 network
         self.inputs, self.outputs = self.create_resnet39()
         self.labels = tf.placeholder(tf.float32, [None, self.outputs.get_shape()[-1]])
@@ -24,6 +23,7 @@ class resnet39:
         layers.apply_regularization(regularizer, tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES))
         self.loss += tf.reduce_sum(tf.get_collection(tf.GraphKeys.REGULARIZATION_LOSSES))
         self.train_op = tf.train.MomentumOptimizer(L, M).minimize(self.loss)
+        self.sess.run(tf.global_variables_initializer())
 
     def create_resnet39(self):
         inputs = tf.placeholder(tf.float32, [None, CHANNEL, N, N])
