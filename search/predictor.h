@@ -6,8 +6,8 @@
 
 const int HISTORY_STEP = 5;
 
-typedef int g_sample[HISTORY_STEP][BOARD_SZ][BOARD_SZ];
-typedef 
+typedef vector<vector<vector<int>>> g_sample;
+typedef vector<float> label;
 class Predictor {
 public:
     vector<vector<float>> test(vector<Board*>& bds);

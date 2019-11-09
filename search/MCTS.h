@@ -18,7 +18,7 @@ struct mcts_node {
     float P_sa;
     float action_value;
     int current_step;
-    mcts_node(const Board& bd, int _pov) :
+    mcts_node(Board& bd, int _pov) :
         parent(NULL),
         expanded(false),
         predicting(false),
@@ -39,7 +39,7 @@ struct mcts_node {
 
 class MCTS {
 public:
-    MCTS(Predictor* _predictor, const Board& bd, int _pov, int _simulate_cnt);
+    MCTS(Predictor* _predictor, Board& bd, int _pov, int _simulate_cnt);
     mcts_node* select();
     void expand(mcts_node* leaf);
     void back_up(mcts_node* leaf, float v);
@@ -51,6 +51,8 @@ public:
     void simulate();
     void move();
     float get_temperature();
+    vector<float> get_root_move_probs();
+    void delete_except(mcts_node* cur, mcts_node* choice);
 private:
     Predictor* predictor;
     mcts_node* root;

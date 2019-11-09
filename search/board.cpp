@@ -94,13 +94,13 @@ void Board::draw() const {
 		for (int j = 0; j < __board[i].size(); j++) {
 			switch(__board[i][j]) {
 				case 0:
-					mvaddstr(i+x_padding, j+y_padding, blank);
+					mvaddstr(i+x_padding, j+y_padding, blank_char);
 					break;
 				case -1:
-					mvaddstr(i+x_padding, j+y_padding, white);
+					mvaddstr(i+x_padding, j+y_padding, white_char);
 					break;
 				case 1:
-					mvaddstr(i+x_padding, j+y_padding, black);
+					mvaddstr(i+x_padding, j+y_padding, black_char);
 					break;
 				default:
 					assert(false);

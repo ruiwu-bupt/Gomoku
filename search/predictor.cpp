@@ -5,11 +5,11 @@
 using namespace std;
 
 // extern PyObject* resnet;
-int Predictor::train(vector<Board*>& bds, vector<vector<int>>& labels) {
+int Predictor::train(vector<Board>& bds, vector<vector<float>>& labels) {
     return 0;
 }
 
-vector<vector<int>> Predictor::test(vector<Board*>& bds) {
+vector<vector<float>> Predictor::test(vector<Board*>& bds) {
     int n = bds.size();
     auto test_sample = vector<g_sample> (n);
     for (int sample_i = 0; sample_i < n; sample_i++) {
@@ -33,7 +33,7 @@ vector<vector<int>> Predictor::test(vector<Board*>& bds) {
             }
         }
     }
-    vector<vector<int>> rst(n);
+    vector<vector<float>> rst(n);
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < BOARD_SZ * BOARD_SZ; j++) {
             rst[i][j] = 1 / (BOARD_SZ * BOARD_SZ);

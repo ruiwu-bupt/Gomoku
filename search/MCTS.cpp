@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <vector>
 
-MCTS::MCTS(Predictor* _predictor, const Board& bd, int _pov, int _simulate_cnt, int _current_step) :
+MCTS::MCTS(Predictor* _predictor, Board& bd, int _pov, int _simulate_cnt) :
     predictor(_predictor),
     simulate_cnt(_simulate_cnt) {
     root = new mcts_node(bd, _pov);
@@ -20,7 +20,7 @@ mcts_node* MCTS::select() {
         for (int i = 0; i < cur->children.size(); i++) {
             if (max_index == -1 || cur->get_ucb() > ucb) {
                 max_index = i;
-                ucb = cur->get_ucb;
+                ucb = cur->get_ucb();
             }
         }
         cur = cur->children[max_index];
@@ -88,7 +88,7 @@ void MCTS::simulate() {
             real_softmax(parent->board, probs);
             for (int j = 0 ; j < BOARD_SZ * BOARD_SZ; j++) {
                 mcts_node* child =  new mcts_node(parent->board, 1 - parent->pov);
-                child_parent = parent;
+                child->parent = parent;
                 child->P_sa = probs[j];
                 parent->children.push_back(child);
                 child->board.move(mv (j / BOARD_SZ, j % BOARD_SZ), parent->pov);
@@ -138,7 +138,7 @@ void MCTS::real_softmax(const Board& bd, vector<float>& probs) {
 }
 
 void MCTS::dir_noise(vector<float>& probs, mcts_node* cur) {
-    return probs;
+    // return probs;
 }
 
 // 在根节点进行 1/t 平滑
@@ -165,7 +165,7 @@ void MCTS::move() {
     real_softmax(root->board, probs);
     int idx = prob_mv(probs);
     mcts_node* new_root = root->children[idx];
-    delete_except(root, choice);
+    delete_except(root, root->children[idx]);
     root = new_root;
 }
 
